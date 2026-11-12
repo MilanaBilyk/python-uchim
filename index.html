@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python с нуля</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f6f8ff;--ink:#26234a;--mut:#6b6990;--acc:#5b5bd6;--acc2:#e9e8ff;--ok:#16895c;--okb:#dff5ea;--bad:#c2410c;--badb:#ffe8dc;--line:#dcdff5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Nunito,system-ui,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:2rem;line-height:1.15;margin:.2em 0}
+h2{font-size:1.25rem;margin:1.6em 0 .5em}
+.mut{color:var(--mut)}
+.grid{display:grid;gap:12px;margin-top:18px}
+.lc{display:block;text-align:left;width:100%;background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;color:inherit;font:inherit;cursor:pointer}
+.lc:hover,.lc:focus-visible{border-color:var(--acc);outline:none}
+.lc b{display:block;font-size:1.05rem}
+.bar{height:8px;background:var(--acc2);border-radius:9px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--acc);width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+button.b{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer}
+button.b.g{background:var(--acc2);color:var(--acc)}
+button:focus-visible,textarea:focus-visible{outline:3px solid #9b9bf0;outline-offset:2px}
+pre{background:#fff;border:2px solid var(--line);border-left:6px solid var(--acc);border-radius:10px;padding:12px 14px;overflow-x:auto;font:15px/1.5 ui-monospace,Consolas,monospace;margin:.6em 0}
+.box{background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+.rem{background:var(--acc2);border-color:var(--acc2)}
+.rem ul{margin:.3em 0;padding-left:1.2em}
+.card{cursor:pointer;user-select:none}
+.card .a{display:none;margin-top:8px;color:var(--acc);font-weight:700;white-space:pre-wrap}
+.card.open .a{display:block}
+.card.known{border-color:var(--ok);background:var(--okb)}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font:inherit;cursor:pointer;color:inherit}
+.opt.ok{border-color:var(--ok);background:var(--okb)}
+.opt.no{border-color:var(--bad);background:var(--badb)}
+.ex{margin-top:6px;font-size:.95rem;color:var(--mut)}
+textarea{width:100%;min-height:110px;border:2px solid var(--line);border-radius:10px;padding:10px;font:inherit;color:var(--ink);background:#fff}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.st{font-size:.85rem;padding:3px 10px;border-radius:99px;background:#fff;border:2px solid var(--line);color:var(--mut)}
+.st.d{background:var(--okb);border-color:var(--ok);color:var(--ok);font-weight:700}
+html[data-theme=mint]{--bg:#f0fbf6;--ink:#17372c;--mut:#4f7667;--acc:#0f8a6f;--acc2:#d9f5ea;--line:#cfeadf}
+html[data-theme=peach]{--bg:#fff5ee;--ink:#4a2a1f;--mut:#86604f;--acc:#d9531e;--acc2:#ffe5d6;--line:#f4d9c8}
+html[data-theme=sky]{--bg:#eef8ff;--ink:#12354d;--mut:#4f7390;--acc:#1565c0;--acc2:#d8ecfc;--line:#cfe3f3}
+html[data-theme=rose]{--bg:#fff0f6;--ink:#4a1f36;--mut:#88566f;--acc:#d6336c;--acc2:#ffdcea;--line:#f5cfdf}
+#hd{max-width:760px;margin:0 auto;padding:12px 16px 0;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.hl{display:flex;gap:6px;flex-wrap:wrap}.hl span{background:#fff;border:2px solid var(--line);border-radius:99px;padding:2px 10px;font-size:.85rem;font-weight:700}
+.dots{display:flex;gap:8px}.dot{width:28px;height:28px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);cursor:pointer;padding:0}.dot.on{box-shadow:0 0 0 3px var(--ink)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--acc);color:#fff;font-weight:800;border-radius:12px;padding:10px 18px;z-index:9;max-width:90vw;text-align:center}
+.acts{display:grid;gap:10px;margin:14px 0}.big2{padding:14px 16px;font-size:1.1rem}
+.snake{display:flex;gap:4px;align-items:center;margin:12px 0;font-size:1.5rem}.seg{flex:1;height:28px;background:var(--acc2);border-radius:8px;display:flex;align-items:flex-end;overflow:hidden}.seg b{display:block;width:100%;background:var(--acc)}
+.tabs{display:flex;gap:6px}
+.big{min-height:170px}.big b{font-size:1.25rem;display:block;margin:6px 0}.big .a{display:none;margin-top:10px;color:var(--acc);font-weight:700;font-size:1.1rem;white-space:pre-wrap}.big.open .a{display:block}.big.open .hint{display:none}.big .b{margin-top:10px}
+.act{display:flex;gap:10px;margin-top:10px}.act .b{flex:1;padding:16px;font-size:1.05rem}
+main{padding-bottom:110px}
+html[data-theme=dark]{color-scheme:dark;--bg:#15132a;--ink:#ecebff;--mut:#aaa8d2;--acc:#8f8fff;--acc2:#2b2852;--line:#3a3670;--ok:#4ade9d;--okb:#123a2d;--bad:#ff9a6b;--badb:#3e2418;--card:#201d40}
+html[data-dk=1] .lc,html[data-dk=1] pre,html[data-dk=1] .box,html[data-dk=1] .opt,html[data-dk=1] textarea,html[data-dk=1] .st,html[data-dk=1] .hl span{background:var(--card)}
+html[data-dk=1] .box.rem{background:var(--acc2)}
+html[data-dk=1] .box.known,html[data-dk=1] .st.d,html[data-dk=1] .opt.ok{background:var(--okb)}
+html[data-dk=1] .opt.no{background:var(--badb)}
+html[data-dk=1] button.b,html[data-dk=1] .toast{color:#15132a}
+html[data-dk=1] button.b.g{color:var(--acc)}
+#nv{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card,#fff);border-top:2px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+#nv button{flex:1;background:none;border:0;font:inherit;color:var(--mut);padding:4px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center}
+#nv button.on{color:var(--acc);font-weight:800}#nv span{font-size:1.35rem;line-height:1.2}#nv .t{font-size:.72rem}
+.toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.conf{position:fixed;top:-30px;font-size:1.6rem;z-index:9;pointer-events:none}
+.hintp{color:var(--mut);font-style:italic}.tx{font-family:ui-monospace,Consolas,monospace;font-size:14px;margin-top:8px}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+@media(prefers-reduced-motion:no-preference){.conf{animation:fall 2.4s ease-in forwards}@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}}
+html[data-theme=sakura]{--bg:#fff4f8;--ink:#4a2338;--mut:#94607a;--acc:#d63f7e;--acc2:#ffdbe9;--line:#f6cfe0}
+html[data-theme=bow]{--bg:#fdf0ff;--ink:#3f2250;--mut:#84609a;--acc:#a63fc9;--acc2:#f3d9ff;--line:#ead0f7}
+html[data-theme=samurai],html[data-theme=steel],html[data-theme=neon]{color-scheme:dark;--ok:#4ade9d;--okb:#123a2d;--bad:#ff9a6b;--badb:#3e2418}
+html[data-theme=samurai]{--bg:#14110f;--ink:#f4ece6;--mut:#b9a99d;--acc:#ff4d5a;--acc2:#3a1f22;--line:#4a3a36;--card:#201b19}
+html[data-theme=steel]{--bg:#0e1621;--ink:#e8eef6;--mut:#9fb0c4;--acc:#4aa3ff;--acc2:#1c2c42;--line:#2c405a;--card:#162234}
+html[data-theme=neon]{--bg:#07100a;--ink:#d9ffd2;--mut:#86c97c;--acc:#39ff14;--acc2:#12301a;--line:#1d5a2a;--card:#0d1d12}
+html[data-dk=1] .chip.on{color:#15132a}
+body::before{position:fixed;top:64px;right:10px;font-size:1.3rem;opacity:.55;pointer-events:none;z-index:0}
+html[data-theme=sakura] body::before{content:"🌸 🎀 🌸"}html[data-theme=bow] body::before{content:"🎀 ✨ 🎀"}html[data-theme=samurai] body::before{content:"⚔️ 🏯"}html[data-theme=steel] body::before{content:"⚙️ 🔧"}html[data-theme=neon] body::before{content:"👾 ⚡"}
+.dot{width:22px;height:22px}.dots{flex-wrap:wrap;gap:6px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:6px 0;margin:6px 0}
+.chip{flex:none;border:2px solid var(--line);background:var(--card,#fff);color:var(--ink);border-radius:99px;padding:5px 12px;font:inherit;font-size:.85rem;cursor:pointer}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:700}
+.inp{display:block;width:100%;padding:11px 12px;margin:8px 0;border:2px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:var(--card,#fff)}
+.petv{position:relative;width:170px;height:170px;margin:10px auto;text-align:center}.pe{font-size:6.5rem;line-height:170px;display:inline-block}
+.ph{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:3rem}.pf{position:absolute;top:62px;left:50%;transform:translateX(-50%);font-size:2.6rem}
+@media(prefers-reduced-motion:no-preference){.pe{animation:bob 2s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-8px)}}}
+@media(prefers-reduced-motion:no-preference){.bar i{transition:width .4s}}
+</style></head><body><header id="hd"></header><main id="app"></main><nav id="nv"></nav>
+<script>
+var L=[
+{t:"Среда и первые программы",s:"IDLE, print, input, числа",
+idea:"Python — язык, на котором ты даёшь компьютеру команды. IDLE — программа, где ты их пишешь. Есть два режима: интерактивный (окно с >>>, каждая команда выполняется сразу, как калькулятор) и файл с программой (пишешь много команд, потом запускаешь через F5). Переменная — это коробочка с именем, в которой лежит значение: x = 5. Всё, что после #, — комментарий, Python его пропускает. Главное, что надо знать: input() всегда возвращает строку, поэтому число из него надо превратить через int() или float().",
+code:"a = int(input('Введите a: '))\nb = int(input('Введите b: '))\nprint('Сумма =', a + b)\n\n20 / 3    # 6.666... (деление всегда дробное)\n20 // 3   # 6   (целая часть)\n20 % 3    # 2   (остаток)\n3 ** 4    # 81  (степень)",
+mem:["/ — обычное деление, // — целая часть, % — остаток, ** — степень","input() даёт строку, число делаем через int() или float()","= это не «равно», а «положи значение в переменную»"],
+cards:[["Что делает //?","Целочисленное деление: 20 // 3 = 6"],["Что вернёт input()?","Всегда строку (str), даже если ввели 5"],["Для чего нужен #?","Комментарий: Python его не выполняет"]],
+quiz:[["Чему равно 20 // 3?",["6.67","6","2"],1,"// отбрасывает дробную часть. Остаток от деления — это %."],["Как правильно прочитать целое число?",["a = input()","a = int(input())","a = str(input())"],1,"input() даёт строку, int() превращает её в число."]],
+say:"Объясни подруге, чем отличаются /, // и %, и почему input() надо оборачивать в int()."},
+{t:"Условные операторы",s:"if, elif, else, and, or, not",
+idea:"Условие — это вопрос, на который отвечают «да» (True) или «нет» (False). Сравнения: ==, !=, >, <, >=, <=. Помни: один = кладёт значение, два == сравнивает. Условия можно склеивать: and (оба верны), or (хотя бы одно верно), not (наоборот). if выполняет блок, если условие верно; elif проверяется, только если предыдущие были ложны; else — если ничего не подошло. Блок выделяется отступом (4 пробела) и двоеточием в конце строки. В Python 0 считается ложью, любое другое число — истиной.",
+code:"x = int(input())\nif x > 10 and x < 20:\n    print('от 11 до 19')\nelif x == 0:\n    print('ноль')\nelse:\n    print('другое')",
+mem:["== сравнивает, = присваивает","and — оба условия, or — хотя бы одно, not — отрицание","После if/elif/else всегда двоеточие и отступ"],
+cards:[["Чем == отличается от =?","== проверяет равенство, = записывает значение в переменную"],["Когда выполняется elif?","Только если все предыдущие if/elif были ложными"],["Что в Python считается ложью для числа?","0"]],
+quiz:[["x = 15. Что даст x > 10 and x < 20?",["True","False","Ошибку"],0,"Оба условия верны, значит and даёт True."],["Что обязательно в конце строки с if?",["Точка с запятой","Двоеточие","Скобка"],1,"После условия ставится двоеточие, дальше идёт блок с отступом."]],
+say:"Объясни, как работает цепочка if / elif / else на примере оценки по баллам."},
+{t:"Циклы",s:"while, for, range, break, format",
+idea:"Цикл повторяет действия, чтобы не писать одно и то же много раз. while работает, пока условие верно (подходит, когда не знаешь, сколько будет шагов). for i in range(...) работает заданное число раз. range(5) даёт 0,1,2,3,4 (конец не включается!); range(2,10,3) даёт 2,5,8: начало, конец, шаг. break выходит из цикла сразу, continue пропускает текущий шаг. Ещё в этой лекции форматирование: \"{0:>10}\".format(x) выравнивает по правому краю в поле шириной 10, а {:.2f} показывает 2 знака после запятой.",
+code:"for i in range(1, 6):\n    print(i)\n\ns = 0\nwhile s < 10:\n    s += 3\nprint(s)   # 12\n\nprint('{0:.2f}'.format(3.14159))   # 3.14\nprint('{0:>8}'.format('Python'))   # справа",
+mem:["range(a, b, step): b не включается","while — пока условие верно, for — заданное число раз","break — выйти, continue — перейти к следующему шагу"],
+cards:[["Что выведет for i in range(3)?","0, 1, 2"],["В чём разница break и continue?","break завершает весь цикл, continue пропускает только текущий шаг"],["Что делает {0:.2f} в format?","Выводит число с двумя знаками после запятой"]],
+quiz:[["Какие числа даст range(2, 10, 3)?",["2, 5, 8","2, 5, 8, 10","3, 6, 9"],0,"Начинаем с 2, шаг 3, до 10 не включая: 2, 5, 8."],["Как выйти из бесконечного while 1?",["stop","exit цикла через break","continue"],1,"break немедленно прерывает цикл."]],
+say:"Объясни, когда нужен while, а когда for, и почему range(5) заканчивается на 4."},
+{t:"Строки",s:"индексы, срезы, методы",
+idea:"Строка — последовательность символов в кавычках. У каждого символа есть номер (индекс), счёт идёт с 0: в 'python' буква p имеет индекс 0, а последняя — индекс -1. Срез s[i:j:k] берёт кусок: от i до j (j не включается) с шагом k. Строки можно склеивать (+) и повторять (*). Важно: строки неизменяемы, то есть s[0] = 'x' даст ошибку, а методы вроде upper() возвращают новую строку. Полезные методы: len(s) — длина, upper/lower — регистр, find — поиск, replace — замена, split — разрезать на части.",
+code:"s = 'python'\ns[0]       # 'p'\ns[-1]      # 'n'\ns[1:4]     # 'yth'\ns[::-1]    # 'nohtyp' (задом наперёд)\nlen(s)     # 6\ns.upper()  # 'PYTHON'\n'ab' * 3   # 'ababab'\ns = s.upper()   # результат надо сохранить!",
+mem:["Индексы с 0, а -1 — последний символ","Срез s[i:j]: j не входит","Строки неизменяемы: метод возвращает новую строку, её нужно сохранить"],
+cards:[["Что даст s[::-1]?","Строку задом наперёд"],["Можно ли изменить s[0] = 'x'?","Нет, строки неизменяемы (будет ошибка)"],["Что делает len(s)?","Возвращает количество символов в строке"]],
+quiz:[["s = 'python'. Что такое s[1:4]?",["'pyt'","'yth'","'ytho'"],1,"Индексы 1, 2, 3: y, t, h. Индекс 4 не берётся."],["Что нужно, чтобы s стала заглавными?",["s.upper()","s = s.upper()","upper(s)"],1,"Метод не меняет строку, а возвращает новую, поэтому присваиваем."]],
+say:"Объясни, что такое индекс и срез, и почему строку нельзя изменить «на месте»."},
+{t:"Списки",s:"[], append, pop, sort, цикл по списку",
+idea:"Список — это набор значений под одним именем, в квадратных скобках: a = [3, 1, 2]. Элементы нумеруются с 0, как в строках, работают и срезы. В отличие от строки, список можно менять. Главное: append(x) добавляет в конец, insert(i, x) вставляет на место i, remove(x) удаляет значение, pop(i) удаляет по индексу и возвращает элемент, sort() сортирует на месте. Также len, min, max, sum. Пройти по списку: for x in a. Из строки список получают через split: 'a,b,c'.split(',').",
+code:"a = [3, 1, 2]\na.append(5)     # [3, 1, 2, 5]\na.sort()        # [1, 2, 3, 5]\na.pop()         # убрал и вернул 5\nprint(len(a), sum(a), max(a))\nfor x in a:\n    print(x * 2)\n'a,b,c'.split(',')   # ['a', 'b', 'c']",
+mem:["append — в конец, insert(i, x) — в нужное место","remove убирает по значению, pop — по индексу","Список изменяемый, строка нет"],
+cards:[["Чем remove отличается от pop?","remove(x) ищет значение x, pop(i) удаляет по индексу и возвращает элемент"],["Как создать список из строки 'a,b,c'?","'a,b,c'.split(',')"],["Как создать список из 5 нулей?","[0] * 5"]],
+quiz:[["a = [1, 2, 3]. Что вернёт a.pop()?",["1","3","[1, 2]"],1,"pop() без аргумента убирает и возвращает последний элемент."],["Что даст 'a,b,c'.split(',')?",["'abc'","['a', 'b', 'c']","('a','b','c')"],1,"split превращает строку в список частей."]],
+say:"Объясни, чем список отличается от строки и перечисли 4 способа изменить список."},
+{t:"Списки и строки вместе",s:"split, join, find, index",
+idea:"Эта лекция про то, как строки и списки превращаются друг в друга. split разрезает строку на список, join склеивает список строк в одну строку: ', '.join(['a','b']) даст 'a, b' (разделитель стоит ПЕРЕД join). list('abc') даёт ['a','b','c']. Поиск: find возвращает индекс или -1, если не нашёл, а index в такой ситуации падает с ошибкой ValueError. rfind и rindex ищут с конца. Проверки: isdigit (только цифры), isalpha (только буквы), isalnum. Помни: строка неизменяема, а список можно менять.",
+code:"s = 'раз два три'\nw = s.split()            # ['раз','два','три']\n'-'.join(w)               # 'раз-два-три'\nlist('abc')              # ['a','b','c']\n'abc'.find('z')          # -1\n# 'abc'.index('z')       # ValueError!\n'123'.isdigit()          # True",
+mem:["split: строка → список, join: список → строка","find даёт -1, index даёт ошибку","isdigit — все символы цифры"],
+cards:[["Что вернёт 'abc'.find('z')?","-1, потому что подстрока не найдена"],["Как склеить список слов через пробел?","' '.join(список)"],["Чем index опасен?","Если не найдёт, вызывает ValueError, а find просто даст -1"]],
+quiz:[["Что даст ','.join(['a', 'b'])?",["'a,b'","['a,b']","'ab,'"],0,"Разделитель вставляется между элементами."],["Что делает find, если подстроки нет?",["Ошибка","Возвращает -1","Возвращает 0"],1,"find мягкий: -1. Ошибку даёт index."]],
+say:"Объясни, как разбить предложение на слова, поменять их и склеить обратно."},
+{t:"Функции",s:"def, параметры, return, переменные",
+idea:"Функция — это поименованный кусок программы, который можно вызывать много раз. Она нужна, чтобы не копировать один и тот же код. Определяется через def имя(параметры): и должна быть описана ДО вызова. Параметры — это входные данные. return отдаёт результат наружу; если return нет, функция вернёт None. Переменные внутри функции локальные: снаружи их не видно. Переменные, созданные вне функций, глобальные: их можно читать внутри, а чтобы менять, нужно написать global x.",
+code:"def area(a, b):\n    return a * b\n\nprint(area(3, 4))   # 12\n\ndef hello():\n    print('Привет!')   # return нет → None\n\nx = 10             # глобальная\ndef f():\n    y = 5          # локальная\n    print(x, y)",
+mem:["def имя(параметры): — создаём, имя(...) — вызываем","return отдаёт значение, без него будет None","Локальные переменные живут только внутри функции"],
+cards:[["Что вернёт функция без return?","None"],["Зачем нужны функции?","Чтобы переиспользовать код и сделать программу короче и понятнее"],["Что такое локальная переменная?","Переменная, известная только внутри функции"]],
+quiz:[["Где должна быть определена функция?",["После вызова","До вызова","Не важно"],1,"Python читает сверху вниз, поэтому def идёт раньше вызова."],["Чем print отличается от return?",["Ничем","print показывает на экране, return отдаёт значение программе","return показывает на экране"],1,"Результат return можно сохранить в переменную, результат print нельзя."]],
+say:"Объясни на примере, что такое параметр, вызов и результат функции."},
+{t:"Файлы",s:"open, r/w/a, read, with",
+idea:"Файл нужен, чтобы данные сохранялись после закрытия программы. Сначала файл открывают: f = open('data.txt', 'r', encoding='utf-8'). Второй аргумент — режим: 'r' читать, 'w' писать (старое содержимое стирается!), 'a' дописывать в конец. encoding='utf-8' нужен, чтобы русские буквы не превратились в кракозябры, причём читать и писать надо в одной кодировке. Чтение: read() — всё сразу, readline() — одну строку, readlines() — список строк, а ещё можно for line in f. Запись: f.write('текст\\n'). Файл нужно закрыть: f.close(). Удобнее конструкция with: файл закроется сам.",
+code:"with open('read_it.txt', 'r', encoding='utf-8') as f:\n    for line in f:\n        print(line.strip())\n\nwith open('out.txt', 'w', encoding='utf-8') as f:\n    f.write('Первая строка\\n')\n    f.write('Вторая строка\\n')",
+mem:["r — читать, w — писать с нуля, a — дописывать","Всегда указывай encoding='utf-8'","with сам закроет файл, \\n — переход на новую строку"],
+cards:[["Что делает режим 'w' с существующим файлом?","Стирает старое содержимое и пишет заново"],["Как дописать в конец файла?","Открыть в режиме 'a'"],["Зачем encoding='utf-8'?","Чтобы русский текст читался и записывался правильно"]],
+quiz:[["Какой режим не удаляет старые данные при записи?",["'w'","'a'","'r'"],1,"'a' (append) добавляет в конец."],["Что вернёт readlines()?",["Одну строку","Список всех строк","Число строк"],1,"Каждая строка файла станет элементом списка."]],
+say:"Объясни, как программа читает числа из файла и записывает результат в другой файл."},
+{t:"Множества и словари",s:"set, dict, get, items",
+idea:"Множество (set) — коллекция уникальных значений без порядка: set([3,6,3,5]) даст {3,5,6}. Удобно убирать повторы и сравнивать наборы: & пересечение (общее), | объединение, - разность. Словарь (dict) хранит пары «ключ: значение», как телефонная книга: d = {'Маша': 5}. Значение достают по ключу: d['Маша']. Если ключа нет, d['Оля'] даст ошибку, а d.get('Оля') вернёт None. Полезно: d.keys(), d.values(), d.items(), проверка 'Маша' in d, добавление d['Оля'] = 4.",
+code:"s1 = {1, 2, 3}\ns2 = {2, 3, 4}\ns1 & s2      # {2, 3}\ns1 | s2      # {1, 2, 3, 4}\n\nd = {'Маша': 5, 'Ира': 4}\nd['Оля'] = 3\nd.get('Лена')        # None\nfor k, v in d.items():\n    print(k, v)",
+mem:["Множество: только уникальные, порядка нет","Словарь: ключ → значение, достаём d[ключ]","get безопасный (None), d[ключ] без ключа даёт ошибку"],
+cards:[["Что даст set([3,6,3,5])?","{3, 5, 6}: повторы убираются"],["Как достать значение безопасно?","d.get(ключ), вернёт None, если ключа нет"],["Что означает s1 & s2?","Пересечение: элементы, которые есть в обоих множествах"]],
+quiz:[["d = {'a': 1}. Что вернёт d.get('b')?",["Ошибку","None","0"],1,"get не падает, а возвращает None."],["Чем множество отличается от списка?",["Хранит только уникальные элементы","Хранит только числа","Можно обращаться по индексу"],0,"Повторы в множестве исчезают, индексов у него нет."]],
+say:"Объясни, когда выбрать список, когда множество, а когда словарь."},
+{t:"Вложенные списки и словари",s:"матрицы, меню, учёт данных",
+idea:"Вложенный список — это список, элементы которого тоже списки, как таблица: m = [[1,2],[3,4]]. Элемент достают двумя индексами: m[1][0] — строка 1, столбец 0, то есть 3. Так же бывают словари со списками внутри: d = {1: ['Mercury', 4878]}, тогда d[1][1] равно 4878. Именно так делают программы учёта данных. Типичная схема такой программы: меню в цикле while 1, внутри if/elif на каждый пункт (1, 2, 3…) и пункт 0 с break для выхода. Для ровных колонок при печати используют ljust(ширина), который выравнивает строку по левому краю.",
+code:"m = [[1, 2], [3, 4]]\nprint(m[1][0])      # 3\nfor row in m:\n    print(row)\n\nd = {1: ['Mercury', 4878]}\nprint(d[1][1])      # 4878\n\nwhile 1:\n    c = input('Ваш выбор: ')\n    if c == '1':\n        print('Пункт 1')\n    elif c == '0':\n        break",
+mem:["m[i][j]: i — строка, j — столбец","Меню = while 1 + if/elif + break на пункте «Выход»","ljust(n) выравнивает текст по левому краю в поле n"],
+cards:[["Как взять элемент строки 2, столбца 1 из m?","m[2][1]"],["Как устроено меню в программе?","Бесконечный while, внутри if/elif по выбору, break для выхода"],["Что делает ljust(10)?","Дополняет строку пробелами справа до ширины 10"]],
+quiz:[["m = [[1, 2], [3, 4]]. Что такое m[1][0]?",["1","3","2"],1,"m[1] — это [3, 4], а у неё индекс 0 — это 3."],["d = {1: ['Mercury', 4878]}. Что даст d[1][1]?",["'Mercury'","4878","1"],1,"d[1] — список, в нём индекс 1 — число 4878."]],
+say:"Объясни, как ты напишешь программу с меню для учёта данных: из каких частей она состоит."}
+];
+var CFG={url:"",key:""};/* облако: вставь адрес и ключ Supabase, см. инструкцию */
+var K="py-active",UK="py-users",P={},ME="",SYNCT=0;
+function lsg(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lss(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function users(){try{return JSON.parse(lsg(UK)||"[]")}catch(e){return[]}}
+function save(){if(!ME)return;lss("py-d:"+ME,JSON.stringify(P));clearTimeout(SYNCT);SYNCT=setTimeout(push,1500)}
+function g(i){return P[i]||(P[i]={r:0,c:{},q:{},e:0,txt:""})}
+function pct(i){var p=g(i),n=0;
+ if(p.r)n++; if(Object.keys(p.c).length>=3)n++; if(Object.keys(p.q).length>=2)n++; if(p.e)n++; return n*25}
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.textContent=h;return e}
+var M=P.m=P.m||{xp:0,s:0,d:"",th:"lav",k:{}};M.k=M.k||{};M.w=M.w||{};M.pr=M.pr||{};
+var TH=[["lav","#5b5bd6","Лаванда"],["mint","#0f8a6f","Мята"],["peach","#d9531e","Персик"],["sky","#1565c0","Небо"],["rose","#d6336c","Роза"],["dark","#2b2852","Ночь"],["sakura","#e0508a","Сакура"],["bow","#b44fd6","Бантик"],["samurai","#ff4d5a","Самурай"],["steel","#4aa3ff","Сталь"],["neon","#39ff14","Неон"]];
+var LV=[[0,"Новичок 🌱"],[80,"Любопытная 🔍"],[250,"Кодерка 💻"],[550,"Питонистка 🐍"],[900,"Гуру Python 👑"]];
+function lvl(){var r=0;LV.forEach(function(x,i){if(M.xp>=x[0])r=i});return r}
+function toast(t){var d=el("div","toast",t);document.body.appendChild(d);setTimeout(function(){d.remove()},2600)}
+function touch(){var t=new Date().toLocaleDateString("sv"),y=new Date(Date.now()-864e5).toLocaleDateString("sv");if(M.d!==t){M.s=(M.d===y)?(M.s||0)+1:1;M.d=t}}
+function xp(n){var b=lvl();M.xp+=n;M.coins=(M.coins||0)+n;touch();var a=lvl();save();hdr();if(a>b)toast("⭐ Новый уровень: "+LV[a][1])}
+function hdr(){var h=document.getElementById("hd");h.innerHTML="";document.documentElement.setAttribute("data-theme",M.th);document.documentElement.setAttribute("data-dk",({dark:1,samurai:1,steel:1,neon:1})[M.th]?"1":"0");
+ var a=el("div","hl");a.appendChild(el("span","",LV[lvl()][1]));a.appendChild(el("span","",M.xp+" XP"));var f=el("span","","🔥 "+(M.s||0));f.title="Дней подряд";a.appendChild(f);a.appendChild(el("span","","🪙 "+(M.coins||0)));var u=el("button","chip","👤 "+(P.name||ME));u.onclick=function(){location.hash="me"};if(ME)a.appendChild(u);h.appendChild(a);
+ var t=el("div","dots");TH.forEach(function(x){var b=el("button","dot"+(x[0]===M.th?" on":""));b.style.background=x[1];b.title=x[2];b.setAttribute("aria-label","Тема: "+x[2]);b.onclick=function(){M.th=x[0];save();hdr()};t.appendChild(b)});h.appendChild(t)}
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function back(){var tp=el("div","top"),b=el("button","b g","← Назад");b.onclick=function(){location.hash=""};tp.appendChild(b);return tp}
+function metro(m){app.innerHTML="";var tp=back(),tb=el("div","tabs");
+ [["c","🃏 Карточки"],["q","❓ Тест"]].forEach(function(t){var b=el("button","b"+(m===t[0]?"":" g"),t[1]);b.onclick=function(){metro(t[0])};tb.appendChild(b)});
+ tp.appendChild(tb);app.appendChild(tp);
+ var cr=el("div","chips"),sel=M.ms||[];
+ var ca=el("button","chip"+(sel.length?"":" on"),"Все уроки");ca.onclick=function(){M.ms=[];save();metro(m)};cr.appendChild(ca);
+ L.forEach(function(l,i){var b=el("button","chip"+(sel.indexOf(i)>=0?" on":""),(i+1)+". "+l.t);b.onclick=function(){var k=sel.indexOf(i);if(k>=0)sel.splice(k,1);else sel.push(i);M.ms=sel;save();metro(m)};cr.appendChild(b)});
+ app.appendChild(cr);var box=el("div");app.appendChild(box);(m==="c"?mCards:mQuiz)(box)}
+function mCards(box){var all=[];L.forEach(function(l,i){l.cards.forEach(function(c,j){all.push([i+"-"+j,i,c])})});XC.forEach(function(x,j){all.push(["x"+j,x[0]-1,[x[1],x[2]]])});QA.forEach(function(x,j){all.push(["q"+j,x[0]-1,[x[1],x[2]]])});
+ all=all.filter(function(x){return inSel(x[1])});var q=sh(all.filter(function(x){return (M.k[x[0]]||0)<2}));if(!q.length)q=sh(all);
+ function show(){box.innerHTML="";
+  if(!q.length){box.appendChild(el("h2","","🎉 Колода пройдена!"));var r=el("button","b","Ещё раз");r.onclick=function(){metro("c")};box.appendChild(r);return}
+  var x=q[0],c=el("div","box big"),act=el("div","act");act.style.display="none";
+  c.setAttribute("tabindex","0");c.appendChild(el("div","mut",(x[1]+1)+". "+L[x[1]].t));c.appendChild(el("b","",x[2][0]));c.appendChild(el("div","a",x[2][1]));c.appendChild(el("div","mut hint","Сначала ответь про себя, потом нажми"));
+  c.onclick=function(){c.classList.add("open");act.style.display="flex"};
+  box.appendChild(el("p","mut","Осталось карточек: "+q.length));box.appendChild(c);
+  var no=el("button","b g","🔁 Повторить"),ok=el("button","b","✅ Знаю");
+  no.onclick=function(){M.k[x[0]]=0;q.shift();q.splice(Math.min(3,q.length),0,x);save();show()};
+  ok.onclick=function(){M.k[x[0]]=(M.k[x[0]]||0)+1;q.shift();var mm=/^(\d+)-(\d+)$/.exec(x[0]);if(mm)g(+mm[1]).c[mm[2]]=1;xp(2);show()};
+  act.appendChild(no);act.appendChild(ok);box.appendChild(act)}
+ show()}
+function mQuiz(box){var all=[];L.forEach(function(l,i){l.quiz.forEach(function(z){all.push([i,z])})});
+ var q=sh(all.filter(function(x){return inSel(x[0])})).slice(0,10),n=0,sc=0;
+ function show(){box.innerHTML="";
+  if(n>=q.length){box.appendChild(el("h2","","Результат: "+sc+" из "+q.length));box.appendChild(el("p","mut",sc>=8?"Отлично, ты супер! 🌟":"Хорошо! Повтори карточки и попробуй ещё раз."));var r=el("button","b","Ещё раз");r.onclick=function(){metro("q")};box.appendChild(r);return}
+  var z=q[n][1],d=el("div","box big"),ex=el("div","ex"),fin=0;box.appendChild(el("p","mut","Вопрос "+(n+1)+" из "+q.length+" · урок "+(q[n][0]+1)));
+  d.appendChild(el("b","",z[0]));
+  sh(z[1].map(function(o,k){return [o,k===z[2]]})).forEach(function(o){var b=el("button","opt",o[0]);b.onclick=function(){if(fin)return;fin=1;
+   if(o[1]){b.classList.add("ok");sc++;xp(3);ex.textContent="Верно! "+z[3]}else{b.classList.add("no");ex.textContent="Правильно: "+z[1][z[2]]+". "+z[3]}
+   var nx=el("button","b","Дальше");nx.onclick=function(){n++;show()};d.appendChild(nx)};d.appendChild(b)});
+  d.appendChild(ex);box.appendChild(d)}
+ show()}
+function cheat(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","📒 Шпаргалка"));app.appendChild(el("p","mut","Всё главное из уроков в одном месте. Удобно читать в метро."));
+ L.forEach(function(l,i){var d=el("div","box");d.appendChild(el("b","",(i+1)+". "+l.t));var u=el("ul");l.mem.forEach(function(m){u.appendChild(el("li","",m))});d.appendChild(u);d.appendChild(el("pre","",l.code));app.appendChild(d)})}
+var PR=[[1,"print(7 // 2, 7 % 2)",["3 1","3.5 1","3 0"],0,"// даёт целую часть (3), % даёт остаток (1)."],
+[2,"x = 5\nif x > 3 and x < 5:\n    print('A')\nelif x == 5:\n    print('B')\nelse:\n    print('C')",["A","B","C"],1,"Первое условие ложно (5 не меньше 5), поэтому проверяется elif: x == 5 верно."],
+[3,"s = 0\nfor i in range(1, 4):\n    s += i\nprint(s)",["6","10","3"],0,"i принимает 1, 2, 3 (4 не входит): 1+2+3 = 6."],
+[4,"s = 'hello'\nprint(s[1:3], len(s))",["he 5","ell 5","el 5"],2,"Срез [1:3] берёт индексы 1 и 2: e и l. Длина строки 5."],
+[5,"a = [1, 2, 3]\na.append(4)\na.pop(0)\nprint(a)",["[1, 2, 3, 4]","[2, 3, 4]","[1, 2, 3]"],1,"append добавил 4, pop(0) убрал элемент с индексом 0, то есть 1."],
+[7,"def f(x):\n    x = x + 1\ny = f(5)\nprint(y)",["6","5","None"],2,"В функции нет return, поэтому она возвращает None."],
+[9,"d = {'a': 1}\nd['b'] = 2\nprint(len(d), d.get('c'))",["2 None","1 None","Ошибка"],0,"В словаре 2 ключа, а get для отсутствующего ключа даёт None."],
+[10,"m = [[1, 2, 3], [4, 5, 6]]\nprint(m[1][2])",["3","6","2"],1,"m[1] это [4, 5, 6], а у неё индекс 2 это 6."]];
+var WT=[[1,"Введи два числа и выведи их среднее арифметическое.","input() даёт строку: нужен int(). Сумму бери в скобки.","a = int(input())\nb = int(input())\nprint((a + b) / 2)"],
+[2,"Введи число и выведи «чётное» или «нечётное».","Чётное число делится на 2 без остатка: n % 2 == 0.","n = int(input())\nif n % 2 == 0:\n    print('чётное')\nelse:\n    print('нечётное')"],
+[3,"Выведи сумму чисел от 1 до 100.","Заведи s = 0 и прибавляй i в цикле for. Конец range не включается!","s = 0\nfor i in range(1, 101):\n    s += i\nprint(s)"],
+[4,"Введи слово и выведи его задом наперёд и его длину.","Срез с шагом -1 и функция len.","s = input()\nprint(s[::-1], len(s))"],
+[5,"Дан список [4, 9, 1, 7]. Выведи максимум, минимум и сумму.","Есть готовые функции max, min, sum.","a = [4, 9, 1, 7]\nprint(max(a), min(a), sum(a))"],
+[6,"Введи предложение и выведи его слова через дефис.","Сначала split(), потом '-'.join(...).","s = input()\nprint('-'.join(s.split()))"],
+[7,"Напиши функцию sq(x), которая возвращает квадрат числа, и вызови её для 5.","def, двоеточие, отступ и return.","def sq(x):\n    return x * x\nprint(sq(5))"],
+[8,"Запиши слово в файл out.txt и прочитай его обратно.","Режим 'w' для записи, 'r' для чтения, не забудь encoding и with.","with open('out.txt', 'w', encoding='utf-8') as f:\n    f.write('привет')\nwith open('out.txt', 'r', encoding='utf-8') as f:\n    print(f.read())"],
+[9,"Выведи, сколько уникальных чисел в списке [1, 2, 2, 3, 3, 3].","Превращение в множество убирает повторы.","print(len(set([1, 2, 2, 3, 3, 3])))"],
+[10,"Сделай словарь из трёх студентов с оценками и выведи каждого.","Цикл for k, v in d.items().","d = {'Маша': 5, 'Ира': 4, 'Оля': 3}\nfor k, v in d.items():\n    print(k.ljust(10), v)"]];
+function nav(){var n=document.getElementById("nv"),h=location.hash;n.innerHTML="";
+ [["","🏠","Главная"],["metro","🚇","Метро"],["lab","⌨️","Практика"],["qa","❓","Защита"],["top","🏆","Топ"],["pet","🐾","Питомец"]].forEach(function(x){var on=x[0]===""?(h===""||/^#l\d+$/.test(h)):h==="#"+x[0];var b=el("button",on?"on":"");b.appendChild(el("span","",x[1]));b.appendChild(el("span","t",x[2]));b.onclick=function(){location.hash=x[0]};n.appendChild(b)})}
+function boom(){if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;for(var i=0;i<28;i++){var s=el("span","conf",["🎉","⭐","💜","✨","🐍"][i%5]);s.style.left=Math.random()*100+"vw";s.style.animationDelay=Math.random()*.6+"s";document.body.appendChild(s);(function(x){setTimeout(function(){x.remove()},3200)})(s)}}
+function lab(m){m=m||"p";app.innerHTML="";var tp=back(),tb=el("div","tabs");
+ [["p","🔮 Предскажи"],["w","⌨️ Код"]].forEach(function(t){var b=el("button","b"+(m===t[0]?"":" g"),t[1]);b.onclick=function(){lab(t[0])};tb.appendChild(b)});tp.appendChild(tb);app.appendChild(tp);
+ var cr=el("div","chips");[["","Все уроки"]].concat(L.map(function(l,i){return [i+1,(i+1)+". "+l.t]})).forEach(function(c){var b=el("button","chip"+((LF||"")===c[0]?" on":""),c[1]);b.onclick=function(){LF=c[0]||0;lab(m)};cr.appendChild(b)});app.appendChild(cr);
+ if(m==="p")lp();else lw()}
+function lp(){var q=sh(PR.filter(function(z){return !LF||z[0]===LF})),n=0,box=el("div");app.appendChild(box);
+ function show(){box.innerHTML="";
+  if(n>=q.length){box.appendChild(el("h2","",q.length?"🎉 Все примеры разобраны!":"Для этого урока пока нет примеров. Загляни во вкладку «Код»"));var r=el("button","b","Ещё раз");r.onclick=function(){lab("p")};box.appendChild(r);return}
+  var z=q[n],d=el("div","box big"),ex=el("div","ex"),fin=0;box.appendChild(el("p","mut","Что выведет программа? "+(n+1)+" из "+q.length+" · урок "+z[0]));d.appendChild(el("pre","",z[1]));
+  z[2].forEach(function(o,k){var b=el("button","opt",o);b.onclick=function(){if(fin)return;fin=1;
+   if(k===z[3]){b.classList.add("ok");ex.textContent="Верно! "+z[4];if(!M.pr[z[1]]){M.pr[z[1]]=1;xp(4)}}else{b.classList.add("no");ex.textContent="Правильно: "+z[2][z[3]]+". "+z[4]}
+   var nx=el("button","b","Дальше");nx.onclick=function(){n++;show()};d.appendChild(nx)};d.appendChild(b)});
+  d.appendChild(ex);box.appendChild(d)}
+ show()}
+function nm(t){return t.split('"').join("'").split("\n").map(function(l){return l.replace(/\s+$/,"")}).join("\n").trim()}
+function lw(){app.appendChild(el("p","mut","Если ты за компьютером: открой IDLE (File → New File), реши задачу сама, запусти по F5. Потом набери решение по памяти здесь: это тренирует синтаксис."));
+ WT.forEach(function(w,i){if(LF&&w[0]!==LF)return;var d=el("div","box"+(M.w[i]?" known":""));d.appendChild(el("b","",(i+1)+". Урок "+w[0]+": "+L[w[0]-1].t));d.appendChild(el("p","",w[1]));
+  var hp=el("p","hintp","💡 "+w[2]);hp.style.display="none";var sp=el("pre","",w[3]);sp.style.display="none";
+  var ta=el("textarea","tx");ta.placeholder="Набери решение по памяти...";ta.spellcheck=false;var rs=el("div","ex");
+  function done(){if(!M.w[i]){M.w[i]=1;xp(15)}d.classList.add("known")}
+  var b1=el("button","b g","💡 Подсказка"),b2=el("button","b g","👀 Решение"),b3=el("button","b","Сверить"),b4=el("button","b g","✅ Решила в IDLE");
+  b1.onclick=function(){hp.style.display=hp.style.display==="none"?"block":"none"};b2.onclick=function(){sp.style.display=sp.style.display==="none"?"block":"none"};b4.onclick=function(){done();rs.textContent="Супер! Задача засчитана."};
+  b3.onclick=function(){var a=nm(ta.value).split("\n"),b=nm(w[3]).split("\n"),bad=-1;for(var j=0;j<Math.max(a.length,b.length);j++){if(a[j]!==b[j]){bad=j;break}}
+   if(bad<0){rs.textContent="Идеально, совпало! 🎉";done()}else rs.textContent="Строка "+(bad+1)+" пока не совпадает"+(b[bad]!==undefined?". Ожидалось: "+b[bad]:" (лишняя строка)")+". Бывают и другие верные решения, проверь в IDLE."};
+  d.appendChild(hp);d.appendChild(sp);d.appendChild(ta);var rw=el("div","row");[b1,b2,b3,b4].forEach(function(x){rw.appendChild(x)});d.appendChild(rw);d.appendChild(rs);app.appendChild(d)})}
+function sync(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","💾 Перенос прогресса"));
+ app.appendChild(el("p","mut","Прогресс сохраняется сам, но отдельно в каждом браузере. Чтобы перенести с телефона на компьютер: скопируй код здесь, на другом устройстве вставь его в это поле и нажми «Загрузить»."));
+ var ta=el("textarea");try{ta.value=btoa(unescape(encodeURIComponent(JSON.stringify(P))))}catch(e){}
+ var cp=el("button","b","Скопировать код"),ld=el("button","b g","Загрузить код из поля");
+ cp.onclick=function(){ta.select();try{navigator.clipboard.writeText(ta.value)}catch(e){}toast("Код скопирован")};
+ ld.onclick=function(){try{P=JSON.parse(decodeURIComponent(escape(atob(ta.value.trim()))));M=P.m=P.m||{xp:0,s:0,d:"",th:"lav",k:{}};M.k=M.k||{};M.w=M.w||{};M.pr=M.pr||{};save();hdr();toast("Прогресс загружен ✅")}catch(e){toast("Не получилось: проверь код")}};
+ app.appendChild(ta);var rw=el("div","row");rw.appendChild(cp);rw.appendChild(ld);app.appendChild(rw)}
+var XC=[[1,"Как напечатать пустую строку?","print()"],[1,"Как вывести значения a и b в одну строку через точку с запятой?","print(a, b, sep=';')"],[1,"Что делает спецсимвол «слеш-n» внутри строки?","Переводит вывод на новую строку"],[1,"Как найти остаток от деления 456 на 13?","456 % 13"],[1,"Как получить целую часть от деления 22 на 3?","22 // 3, получится 7"],
+[2,"Что такое составное условие?","Несколько простых условий, соединённых через and, or, not"],[2,"Что такое тернарный оператор?","Короткая запись if/else в одну строку: x = a if условие else b"],[2,"Может ли внутри if быть другой if?","Да, ветвления можно вкладывать друг в друга"],[2,"Что такое множественный выбор?","Несколько веток подряд: if, elif, elif, else"],[2,"В чём разница между = и ==?","= записывает значение в переменную, == сравнивает два значения"],
+[3,"Как записать range для значений от 0 до n с шагом 1?","range(n + 1)"],[3,"Как записать range от 19 до 0 с шагом -1?","range(19, -1, -1)"],[3,"Сколько раз выполнится тело for a in range(1, 10)?","9 раз (значения 1…9)"],[3,"Сколько раз выполнится тело for b in range(10, 20)?","10 раз (значения 10…19)"],[3,"Может ли тело for с range не выполниться ни разу?","Да, если диапазон пустой, например range(5, 5)"],[3,"Что такое зацикливание программы?","Цикл никогда не заканчивается, потому что условие всегда верно (например, в while забыли менять переменную)"],[3,"Всегда ли for можно заменить на while? А наоборот?","for на while можно всегда. while на for не всегда: когда число шагов заранее неизвестно"],
+[4,"Как посчитать, сколько раз буква «u» встречается в строке s?","s.count('u')"],
+[5,"Что такое генератор списка?","Создание списка одной строкой: [i for i in range(-100, 71, 5)]"],[5,"Как вывести список a в обратном порядке?","a[::-1] (или a.reverse(), но оно меняет сам список)"],
+[6,"Как проверить, что слово x симметричное (палиндром)?","x == x[::-1]"],
+[7,"Что такое lambda-функция?","Короткая безымянная функция в одну строку: f = lambda x: x * 2"],[7,"Что такое аргументы по умолчанию?","Значение в определении: def f(x, n=2). Если n не передали, берётся 2"],[7,"Что такое аргументы-ключевые слова?","Передача по имени: f(n=5, x=3). Порядок не важен"],[7,"Что такое аргументы произвольной длины?","*args собирает лишние позиционные аргументы в кортеж, **kwargs собирает именованные в словарь"],[7,"Что такое пустая функция?","Функция, в теле которой только pass: она ничего не делает"],[7,"Что такое область видимости переменной?","Где переменная доступна: локальная только внутри функции, глобальная во всей программе"],
+[8,"Что делает модуль pickle?","Сохраняет объекты в файл (pickle.dump) и достаёт обратно (pickle.load). Файл открывают в режимах 'wb' и 'rb'"],[8,"Чем write отличается от writelines?","write пишет одну строку, writelines записывает список строк. Переводы строк нужно добавлять самой"],
+[9,"Как создать множество генератором?","{u for u in range(1, 10, 2)}"],[9,"Чем remove отличается от discard у множества?","remove даёт ошибку, если элемента нет, а discard молча ничего не делает"],
+[10,"Как достать элемент d[3][2] из словаря списков?","d[3] даёт список по ключу 3, а [2] берёт в нём элемент с индексом 2"]];
+WT.push([2,"Счастливый билет (ЛР2). На вход шесть цифр. Выведи «Счастливый», если сумма первых трёх цифр равна сумме последних трёх, иначе «Обычный».","Срезы s[:3] и s[3:], а сумму цифр считай через sum(map(int, ...)).","s = input()\nif sum(map(int, s[:3])) == sum(map(int, s[3:])):\n    print('Счастливый')\nelse:\n    print('Обычный')"],
+[2,"Упрости код из контрольных вопросов: if n == 0 выводит «Нет результата», и отдельный if n != 0 выводит 1 / n.","Два противоположных условия можно заменить на if и else.","n = int(input())\nif n == 0:\n    print('Нет результата')\nelse:\n    print(1 / n)"],
+[3,"Выведи числа от 19 до 0 с шагом -1 и в конце сколько раз выполнилось тело цикла.","Конец range не включается, поэтому до 0 нужно написать -1. Счётчик k увеличивай в цикле.","k = 0\nfor i in range(19, -1, -1):\n    print(i)\n    k += 1\nprint(k)"],
+[4,"Вводится строка. Найди, сколько раз в ней встречается буква «u» (ЛР4).","У строк есть метод count.","s = input()\nprint(s.count('u'))"],
+[4,"Дано предложение, слова через один пробел (минимум 7 слов). Выведи первые 6 слов циклом.","Сначала split(), потом for i in range(6).","s = input()\nw = s.split()\nfor i in range(6):\n    print(w[i])"],
+[5,"Создай генератором список от -100 до 70 с шагом 5 и выведи его в прямом и в обратном порядке (ЛР5).","range(-100, 71, 5), конец 71, чтобы 70 вошло.","a = [i for i in range(-100, 71, 5)]\nprint(a)\nprint(a[::-1])"],
+[5,"Дан список a = [3, -2, 5, -1]. Замени отрицательные элементы их квадратами и отсортируй по возрастанию.","Цикл по индексам: for i in range(len(a)). Квадрат: a[i] ** 2.","a = [3, -2, 5, -1]\nfor i in range(len(a)):\n    if a[i] < 0:\n        a[i] = a[i] ** 2\na.sort()\nprint(a)"],
+[6,"Введи слова через пробел. Выведи слова, которые отличаются от последнего слова и при этом симметричные (ЛР6).","Последнее слово w[-1]. Симметричное: x == x[::-1].","s = input()\nw = s.split()\nfor x in w:\n    if x != w[-1] and x == x[::-1]:\n        print(x)"],
+[7,"Напиши функцию power(x, n) со значением n по умолчанию 2. Вызови power(3) и power(2, 5).","В def напиши n=2.","def power(x, n=2):\n    return x ** n\nprint(power(3))\nprint(power(2, 5))"],
+[8,"Перепиши файл in.txt в out.txt, заменив круглые скобки квадратными (ЛР8).","Прочитай всё через read(), замени replace-ом и запиши.","with open('in.txt', 'r', encoding='utf-8') as f:\n    t = f.read()\nt = t.replace('(', '[').replace(')', ']')\nwith open('out.txt', 'w', encoding='utf-8') as f:\n    f.write(t)"],
+[9,"Даны множества a = {1, 2, 3, 4} и b = {3, 4, 5}. Выведи объединение, пересечение и разность a - b.","Операции |, & и -.","a = {1, 2, 3, 4}\nb = {3, 4, 5}\nprint(a | b)\nprint(a & b)\nprint(a - b)"],
+[10,"Словарь планет: ключ — номер, значение — [название, расстояние, жизнь, спутники]. Увеличь на 1 спутников у планет, где жизнь равна 1 (ЛР10).","Жизнь в индексе 2, спутники в индексе 3.","d = {3: ['Earth', 12774, 1, 1], 4: ['Mars', 6786, 1, 2]}\nfor k in d:\n    if d[k][2] == 1:\n        d[k][3] += 1\nprint(d)"]);
+var QL=0;
+var REF=["Python выполняет команды по порядку. Переменная это имя для значения. input() всегда даёт строку, поэтому число читаем через int(). Операции: / даёт дробное деление, // целую часть, % остаток, ** степень.",
+"Условие отвечает True или False. if выполняет блок, если условие верно, elif проверяется только когда прошлые условия ложны, else ловит всё остальное. Сравнение это ==, а = кладёт значение. Условия склеивают через and, or, not, а вложенность задаётся отступом.",
+"Цикл повторяет блок команд. for с range(a, b, step) идёт по числам, конец b не включается. while работает, пока условие верно, и нужен, когда число шагов неизвестно; в нём надо менять переменную, иначе будет зацикливание. break выходит из цикла, continue пропускает шаг.",
+"Строка это последовательность символов с индексами с 0, а -1 это последний символ. Срез s[i:j:k] берёт кусок, j не включается. Строки неизменяемы: методы upper, replace, split, find возвращают новую строку, и результат надо сохранять в переменную.",
+"Список это изменяемая упорядоченная коллекция. append добавляет в конец, insert вставляет на место, remove удаляет по значению, pop по индексу, sort сортирует. Есть len, min, max, sum, срезы и генераторы списков; по списку идёт for x in a.",
+"split превращает строку в список слов, join склеивает список в строку (разделитель пишется перед join). find при неудаче даёт -1, а index падает с ошибкой. Строку менять нельзя, а список можно, поэтому работаем со списком и собираем обратно через join.",
+"Функция это именованный блок кода, который можно вызывать много раз. Параметры это входные данные, return отдаёт результат, а без него будет None. Переменные внутри функции локальные, вне функций глобальные; изменить глобальную внутри можно через global. Бывают аргументы по умолчанию, по ключу, *args и lambda.",
+"Файл открывают так: open(имя, режим, encoding='utf-8'). Режим r читает, w пишет с нуля и стирает старое, a дописывает. Читают через read, readline, readlines или циклом for. Пишут через write. Закрывают через close, а удобнее with: он закроет файл сам. Кодировка нужна, чтобы русский текст не искажался.",
+"Множество хранит уникальные элементы без порядка, поддерживает |, & и -, методы add и remove. Словарь хранит пары ключ и значение: значение берём d[ключ], безопасно через get. Перебор через items(), проверка ключа через in.",
+"Вложенный список это таблица, элемент m[i][j]: строка i, столбец j. Словарь может хранить списки, тогда d[ключ][индекс]. Программа учёта строится как меню: бесконечный while, ветки if/elif на пункты и break для выхода; для ровных колонок используют ljust."];
+var QA=[[1,"Выполни в интерпретаторе: целочисленное деление 22 на 3; 3 в 4-й степени; константа π; sin(34); остаток от деления 456 на 13; корень из 10; остаток 234 на 7; 34π.","22 // 3 даёт 7\n3 ** 4 даёт 81\nimport math, затем math.pi даёт 3.14159...\nmath.sin(34) даёт 0.529...\n456 % 13 даёт 1\nmath.sqrt(10) даёт 3.162...\n234 % 7 даёт 3\n34 * math.pi даёт 106.81..."],
+[1,"Как напечатать пустую строку?","print()"],
+[1,"Как одним print вывести значения нескольких переменных, каждое в отдельной строке?","print(a, b, c, sep='\\n')"],
+[1,"Как одним print вывести несколько переменных одной строкой через пробел?","print(a, b, c). Пробел ставится по умолчанию."],
+[1,"Как одним print вывести несколько переменных одной строкой через точку с запятой?","print(a, b, c, sep=';')"],
+[1,"Что выведет print('строка1\\n строка2')?","Две строки: «строка1», а на следующей « строка2» (с пробелом в начале), потому что \\n переводит строку."],
+[2,"Почему нужны ветвления в программе?","Чтобы программа выбирала действия в зависимости от данных, а не выполняла всегда одно и то же."],
+[2,"Поясните работу оператора if.","Проверяет условие. Если оно истинно (True), выполняется блок с отступом, если ложно, блок пропускается. Запись: if условие: ..."],
+[2,"Поясните работу оператора if-elif.","Условия проверяются по очереди сверху вниз, выполняется блок первого истинного условия, остальные пропускаются. else срабатывает, если не подошло ни одно."],
+[2,"Поясните работу тернарного оператора.","Короткая запись выбора в одну строку: x = a if условие else b. Пример: m = a if a > b else b."],
+[2,"Какой алгоритм называется алгоритмом разветвляющейся структуры?","Тот, в котором в зависимости от условия выполняется одна из нескольких ветвей действий."],
+[2,"Чем отличается разветвляющийся алгоритм от линейного?","Линейный выполняет все команды строго по порядку один раз. Разветвляющийся содержит проверку условия и выбор ветви."],
+[2,"Что такое условный оператор? Какие существуют его формы?","Оператор, выполняющий действия по условию. Формы: неполная (if), полная (if-else), множественная (if-elif-else), тернарная."],
+[2,"Что такое составной оператор? Каков формат его записи?","Группа операторов под одним заголовком (if, for, def). Заголовок заканчивается двоеточием, а затем идёт блок строк с одинаковым отступом (обычно 4 пробела)."],
+[2,"Какие операторы сравнения используются в Python?","==, !=, >, <, >=, <="],
+[2,"Что называется простым условием? Приведите примеры.","Одно сравнение или логическое значение. Примеры: x > 5, a == b, s == 'да'."],
+[2,"Что такое составное условие? Приведите примеры.","Несколько простых условий, соединённых логическими операторами. Примеры: x > 0 and x < 10; a == 1 or b == 2."],
+[2,"Какие логические операторы допускаются при составлении сложных условий?","and (И), or (ИЛИ), not (НЕ)."],
+[2,"Может ли оператор ветвления содержать внутри себя другие ветвления?","Да, ветвления можно вкладывать друг в друга, внутренний блок получает ещё один отступ."],
+[2,"Что такое множественный выбор?","Выбор одного варианта из многих цепочкой if-elif-...-else."],
+[2,"В чём разница между = и ==?","= присваивает значение переменной, == сравнивает два значения и даёт True или False."],
+[2,"Как упростить код: if Number == 0: print('Нет результата') и отдельный if Number != 0: print(1/Number)?","Условия взаимоисключающие, поэтому нужен if-else:\nif Number == 0:\n    print('Нет результата')\nelse:\n    print(1 / Number)"],
+[3,"Что такое «цикл»?","Многократное повторение блока команд (тела цикла) по набору значений или пока выполняется условие."],
+[3,"В каких случаях используют инструкцию for? Каков её общий вид?","Когда число повторений известно или нужно перебрать элементы последовательности. Вид: for переменная in последовательность: тело цикла."],
+[3,"Что такое переменная цикла for, тело цикла? Что может быть использовано в качестве переменной цикла?","Переменная цикла по очереди принимает значения последовательности. Тело цикла это блок с отступом, который повторяется на каждом шаге. Перебирать можно range, строку, список, множество, словарь."],
+[3,"Как оформить range(), если нужны все значения: а) от 0 до n с шагом 1; б) от 4 до k с шагом 1; в) от 19 до 0 с шагом -1; г) от 18 до 8 с шагом -1?","а) range(0, n + 1) или range(n + 1)\nб) range(4, k + 1)\nв) range(19, -1, -1)\nг) range(18, 7, -1)\nКонец диапазона не включается, поэтому его сдвигают на 1."],
+[3,"Может ли тело for с range() при шаге 1 не выполниться ни разу?","Да, если диапазон пуст, например range(5, 5) или range(7, 3)."],
+[3,"Сколько раз выполнится тело: for a in range(1, 10); for b in range(10, 20); for i in range(n, m) при m ≥ n?","range(1, 10): 9 раз\nrange(10, 20): 10 раз\nrange(n, m): m - n раз (при m == n ни разу)."],
+[3,"Всегда ли for можно заменить на while? А наоборот?","for на while можно заменить всегда. while на for не всегда: если число повторений заранее неизвестно и зависит от данных."],
+[3,"Что такое «зацикливание программы»? В каком случае оно может произойти?","Цикл никогда не завершается, потому что условие всегда истинно. Например, в while забыли менять переменную из условия."],
+[7,"Что такое функция?","Именованный блок кода, который можно вызывать много раз, передавая параметры и получая результат."],
+[7,"Способы создания функций в Python.","Оператор def (обычная функция) и lambda (анонимная однострочная функция)."],
+[7,"Пустая функция.","Функция, в теле которой только pass: def f(): pass. Это заготовка, она ничего не делает."],
+[7,"Оператор return.","Возвращает результат вызывающему коду и завершает функцию. Без return функция вернёт None. Через запятую можно вернуть несколько значений (кортеж)."],
+[7,"Lambda-функция.","Короткая функция без имени из одного выражения: f = lambda x, y: x + y. Результат выражения возвращается сам."],
+[7,"Обязательные аргументы (Required arguments).","Параметры без значения по умолчанию. При вызове их нужно передать и в том же порядке: def f(a, b), вызов f(1, 2)."],
+[7,"Аргументы-ключевые слова (Keyword arguments).","Передача по имени параметра: f(b=2, a=1). Порядок не важен."],
+[7,"Аргументы по умолчанию (Default arguments).","Параметр со значением в определении: def f(a, b=10). Если b не передали, берётся 10."],
+[7,"Аргументы произвольной длины (Variable-length arguments).","*args собирает лишние позиционные аргументы в кортеж, **kwargs собирает именованные в словарь."],
+[7,"Область видимости переменных.","Локальные переменные существуют только внутри функции, глобальные объявлены вне функций и видны везде. Чтобы изменить глобальную внутри функции, пишут global имя."],
+[8,"Какие операции и операторы используются при работе с файлами?","open() открывает файл (режимы r, w, a, b), read, readline, readlines читают, write и writelines пишут, close закрывает, with закрывает автоматически, for line in f читает построчно."],
+[8,"Необходимо ли использовать процедуру закрытия файла?","Да. Закрытие сохраняет записанные данные и освобождает файл. Удобнее конструкция with: она закроет файл сама."],
+[8,"Какие библиотеки используются для работы с файлами?","Базовые open и методы файла встроены и импорта не требуют. Для путей и файлов системы используют os, os.path, pathlib, для копирования shutil, для сохранения объектов pickle, для форматов csv и json."],
+[9,"Как создать множество конструктором и генератором?","Конструктором: a = set('любое множество'). Генератором: b = {u for u in range(1, 10, 2)}."],
+[9,"Чем add() отличается от remove() у множества?","add(x) добавляет элемент. remove(x) удаляет элемент и вызывает ошибку, если его нет (discard ошибки не даёт)."],
+[9,"Изменит ли a.union(b) множество a?","Нет. union() возвращает новое множество, поэтому результат надо сохранить: c = a.union(b). Чтобы изменить a, используют a.update(b)."]];
+var PG=[[2,"Счастливый билет","s = input()\nif sum(map(int, s[:3])) == sum(map(int, s[3:])):\n    print('Счастливый')\nelse:\n    print('Обычный')","s[:3] это первые три цифры, s[3:] последние три. map(int, ...) превращает каждую цифру в число, sum складывает. Потом сравниваем суммы."],
+[3,"Сумма чисел от 1 до 100","s = 0\nfor i in range(1, 101):\n    s += i\nprint(s)","s это накопитель, в начале 0. range(1, 101) даёт 1...100 (конец не входит). В каждом шаге прибавляем i. Ответ 5050."],
+[4,"Вариант 1: три задачи со строкой","s = input()\nprint(s.count('u'))\nprint(s.replace('-', '+'))\nif s.count('о') > s.count('а'):\n    print('о')\nelse:\n    print('а')","count считает вхождения подстроки. replace заменяет все минусы плюсами. В третьей задаче сравниваем, сколько раз встречается «о» и «а»."],
+[5,"Список генератором, прямой и обратный порядок","a = [i for i in range(-100, 71, 5)]\nprint(a)\nprint(a[::-1])","Генератор списка собирает числа от -100 до 70 с шагом 5 (71, чтобы 70 вошло). a[::-1] это срез с шагом -1, то есть список задом наперёд."],
+[6,"Вариант 3: слова, отличающиеся от последнего","s = input()\nw = s.split()\nfor x in w:\n    if x != w[-1]:\n        print(x[0] + x[1:].replace(x[0], ''))","split делит текст на слова, w[-1] последнее слово. Для остальных печатаем первую букву, а в остатке слова удаляем её повторы через replace(x[0], '')."],
+[7,"Функция max3 без встроенного max","def max3(a, b, c):\n    m = a\n    if b > m:\n        m = b\n    if c > m:\n        m = c\n    return m\nprint(max3(4, 9, 2))","Считаем максимальным a, потом сравниваем с b и c и обновляем m. return отдаёт результат, print выводит его."],
+[8,"Вариант 1: номер строки и число символов","with open('in.txt', 'r', encoding='utf-8') as f, open('out.txt', 'w', encoding='utf-8') as g:\n    for i, line in enumerate(f, 1):\n        line = line.rstrip('\\n')\n        g.write(str(i) + ' ' + str(len(line)) + ' ' + line + '\\n')\n        print(i, len(line), line)","with открывает оба файла и закроет их сам. enumerate(f, 1) даёт номер строки с 1. rstrip убирает перевод строки, чтобы длина считалась честно. Пишем в out.txt и дублируем на экран, как просят в задании."],
+[9,"Множества: создание, add, remove, union","a_set, b_set = set('любое множество'), {u for u in range(1, 10, 2)}\nprint(a_set, b_set)\na_set.add('ещё элемент')\nb_set.add('ещё элемент')\na_set.remove('л')\nb_set.remove(3)\nc_set = a_set.union(b_set)\nprint(c_set)","Множество создаём конструктором и генератором. add добавляет элемент, remove удаляет. union возвращает новое множество, поэтому его сохраняем в c_set."],
+[10,"Меню и словарь планет","d = {1: ['Mercury', 4878], 3: ['Earth', 12774]}\nwhile 1:\n    print('1. Показать планеты')\n    print('0. Выход')\n    c = input('Ваш выбор: ')\n    if c == '1':\n        for k in d:\n            print(str(k).ljust(3), d[k][0].ljust(10), d[k][1])\n    elif c == '0':\n        break","while 1 крутит меню, пока не выберут 0. Внутри if/elif на каждый пункт. d[k][0] это название, d[k][1] диаметр; ljust выравнивает колонки."]];
+function qcard(q,a,key){var d=el("div","box card"+(M.qa[key]?" known":""));d.setAttribute("tabindex","0");d.appendChild(el("b","",q));d.appendChild(el("div","a",a));
+ function tg(){d.classList.toggle("open");if(d.classList.contains("open")&&!M.qa[key]){M.qa[key]=1;d.classList.add("known");xp(2)}}
+ d.onclick=tg;d.onkeydown=function(e){if(e.key==="Enter")tg()};return d}
+function qa(m){M.qa=M.qa||{};m=m||"q";app.innerHTML="";var tp=back(),tb=el("div","tabs");
+ [["q","❓ Вопросы"],["p","📜 Программы"]].forEach(function(t){var b=el("button","b"+(m===t[0]?"":" g"),t[1]);b.onclick=function(){qa(t[0])};tb.appendChild(b)});tp.appendChild(tb);app.appendChild(tp);
+ app.appendChild(el("p","mut",m==="q"?"Вопросы для защиты из твоих лабораторных. Сначала ответь вслух, потом нажми на карточку: покажется ответ.":"Примеры программ по лабораторным с разбором. Моих собственных решений у тебя здесь нет: пришли свои, и я добавлю."));
+ var cr=el("div","chips");[0,1,2,3,4,5,6,7,8,9,10].forEach(function(n){var b=el("button","chip"+(QL===n?" on":""),n?"ЛР"+n:"Все");b.onclick=function(){QL=n;qa(m)};cr.appendChild(b)});app.appendChild(cr);
+ if(m==="q"){var l=QA.filter(function(x){return !QL||x[0]===QL});var dn=l.filter(function(x){return M.qa[QA.indexOf(x)]}).length;
+  app.appendChild(el("p","mut","Изучено: "+dn+" из "+l.length));if(!l.length)app.appendChild(el("p","","По этой работе вопросов в методичке нет."));
+  l.forEach(function(x){app.appendChild(el("p","mut","ЛР"+x[0]));app.lastChild.style.margin="10px 0 -4px";app.appendChild(qcard(x[1],x[2],QA.indexOf(x)))})}
+ else{var g2=PG.filter(function(x){return !QL||x[0]===QL});if(!g2.length)app.appendChild(el("p","","Для этой работы примера пока нет."));
+  g2.forEach(function(x){var d=el("div","box");d.appendChild(el("b","","ЛР"+x[0]+". "+x[1]));d.appendChild(el("pre","",x[2]));var e=el("div","ex",x[3]);e.style.display="none";e.style.color="var(--ink)";var b=el("button","b g","👀 Разбор");b.onclick=function(){e.style.display=e.style.display==="none"?"block":"none"};d.appendChild(b);d.appendChild(e);app.appendChild(d)})}}
+var LF=0,PYO=null;
+function inSel(i){var s=M.ms||[];return !s.length||s.indexOf(i)>=0}
+function lv2(x){var r=0;LV.forEach(function(q,i){if(x>=q[0])r=i});return r}
+function ph(){return lsg("py-ph:"+ME)||""}
+function hsh(s){try{return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)).then(function(d){return Array.prototype.map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}catch(e){return Promise.resolve(btoa(unescape(encodeURIComponent(s))))}}
+function api(p,o){o=o||{};o.headers=Object.assign({apikey:CFG.key,Authorization:"Bearer "+CFG.key,"Content-Type":"application/json"},o.headers||{});return fetch(CFG.url+"/rest/v1/"+p,o).then(function(r){if(!r.ok)throw r.status;return r.text()}).then(function(t){return t?JSON.parse(t):null})}
+function push(){if(!CFG.url||!ME)return;api("players?on_conflict=nick",{method:"POST",headers:{Prefer:"resolution=merge-duplicates"},body:JSON.stringify([{nick:ME,name:P.name||ME,pin:ph(),xp:M.xp,data:JSON.stringify(P)}])}).catch(function(){})}
+function initM(){M=P.m=P.m||{xp:0,s:0,d:"",th:"lav",k:{}};M.k=M.k||{};M.w=M.w||{};M.pr=M.pr||{};M.inv=M.inv||{p0:1};M.coins=M.coins||0;M.pet=M.pet||0;M.qa=M.qa||{};M.eq=M.eq||{h:-1,f:-1}}
+function loadU(n){try{P=JSON.parse(lsg("py-d:"+n)||"{}")}catch(e){P={}}initM()}
+function enter(n,name,h,data,isNew){var us=users();
+ if(isNew&&!data&&!us.length&&lsg("milana-py-v1"))data=lsg("milana-py-v1");
+ if(data){var l=lsg("py-d:"+n);try{if(l&&JSON.parse(l).m.xp>JSON.parse(data).m.xp)data=l}catch(e){}lss("py-d:"+n,data)}
+ if(us.indexOf(n)<0){us.push(n);lss(UK,JSON.stringify(us))}
+ ME=n;lss(K,n);lss("py-ph:"+n,h);loadU(n);if(isNew||!P.name)P.name=name;save();push();location.hash="";route()}
+function loginScr(){app.innerHTML="";document.getElementById("nv").innerHTML="";
+ app.appendChild(el("h1","","🐍 Python с нуля"));
+ app.appendChild(el("p","mut","Войди или создай профиль: у каждого свой прогресс, уровень, питомец и место в таблице лидеров."+(CFG.url?" Профиль работает на всех твоих устройствах.":" Сейчас профили хранятся на этом устройстве.")));
+ var ni=el("input","inp"),pi=el("input","inp"),er=el("div","ex");ni.placeholder="Ник (например, Милана)";pi.placeholder="PIN, 4–8 цифр";pi.type="password";pi.inputMode="numeric";pi.maxLength=8;
+ var b1=el("button","b","Войти"),b2=el("button","b g","Создать профиль");
+ function go(mode){var name=ni.value.trim(),pin=pi.value.trim(),n=name.toLowerCase();if(name.length<2||pin.length<4){er.textContent="Ник от 2 символов и PIN от 4 цифр";return}
+  hsh(n+":"+pin).then(function(h){
+   if(CFG.url)return api("players?nick=eq."+encodeURIComponent(n)+"&select=name,pin,data").then(function(r){var row=r[0];
+    if(mode==="l"){if(!row){er.textContent="Такого ника нет. Нажми «Создать профиль»";return}if(row.pin!==h){er.textContent="Неверный PIN";return}enter(n,row.name,h,row.data)}
+    else{if(row){er.textContent="Этот ник занят, выбери другой";return}enter(n,name,h,null,1)}}).catch(function(){er.textContent="Нет связи с сервером. Проверь интернет."});
+   var old=lsg("py-ph:"+n);
+   if(mode==="l"){if(!old){er.textContent="Такого профиля нет на этом устройстве";return}if(old!==h){er.textContent="Неверный PIN";return}enter(n,name,h)}
+   else{if(old){er.textContent="Такой ник уже есть";return}enter(n,name,h,null,1)}})}
+ b1.onclick=function(){go("l")};b2.onclick=function(){go("r")};pi.onkeydown=function(e){if(e.key==="Enter")go("l")};
+ app.appendChild(ni);app.appendChild(pi);var rw=el("div","row");rw.appendChild(b1);rw.appendChild(b2);app.appendChild(rw);app.appendChild(er);
+ app.appendChild(el("p","mut","PIN не пароль от почты или соцсетей. Не используй важные пароли."))}
+function meScr(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","👤 "+(P.name||ME)));
+ app.appendChild(el("p","mut",LV[lvl()][1]+" · "+M.xp+" XP · 🪙 "+M.coins+" · 🔥 "+(M.s||0)));
+ app.appendChild(el("p","mut",CFG.url?"Прогресс сам сохраняется в облаке, заходи с любого устройства.":"Прогресс хранится на этом устройстве. Для входа с других устройств нужен облачный режим (инструкция в ответе Claude) или «Перенос прогресса»."));
+ var rw=el("div","row"),o=el("button","b","Выйти из профиля"),t=el("button","b g","💾 Перенос прогресса");o.onclick=function(){push();ME="";lss(K,"");route()};t.onclick=function(){location.hash="sync"};rw.appendChild(o);rw.appendChild(t);app.appendChild(rw)}
+function topScr(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","🏆 Таблица лидеров"));var box=el("div");app.appendChild(box);
+ function draw(rows,note){box.innerHTML="";box.appendChild(el("p","mut",note+" Зарегистрировано: "+rows.length+", в игре (XP > 0): "+rows.filter(function(r){return r.xp>0}).length));
+  rows.sort(function(a,b){return b.xp-a.xp});
+  rows.forEach(function(r,i){var d=el("div","box"+(r.me?" known":""));d.style.display="flex";d.style.justifyContent="space-between";d.style.gap="8px";d.appendChild(el("b","",(["🥇","🥈","🥉"][i]||(i+1)+".")+" "+r.name+(r.me?" (ты)":"")));d.appendChild(el("span","",r.xp+" XP · "+LV[lv2(r.xp)][1]));box.appendChild(d)})}
+ if(CFG.url){box.textContent="Загрузка…";api("players?select=nick,name,xp&order=xp.desc&limit=100").then(function(r){draw(r.map(function(x){return{name:x.name,xp:x.xp||0,me:x.nick===ME}}),"Общая таблица.")}).catch(function(){box.textContent="Нет связи с сервером."})}
+ else draw(users().map(function(u){var d={};try{d=JSON.parse(lsg("py-d:"+u)||"{}")}catch(e){}return{name:d.name||u,xp:(d.m&&d.m.xp)||0,me:u===ME}}),"Таблица этого устройства. Общая включается в облачном режиме.")}
+var PETS=[["🐱","Кот",0],["🐰","Зайка",60],["🦊","Лисичка",120],["🐼","Панда",180],["🐸","Лягушка",240],["🦄","Единорог",400]],ACC=[["🎀","Бантик","h",30],["🌸","Цветок","h",40],["🧢","Кепка","h",50],["🎩","Цилиндр","h",90],["🎧","Наушники","h",100],["👑","Корона","h",150],["🤓","Умные очки","f",60],["🕶️","Тёмные очки","f",70]];
+function petScr(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","🐾 Твой питомец"));
+ app.appendChild(el("p","mut","За каждое очко XP копится монетка 🪙. Покупай питомцев и наряды, надевай и снимай."));
+ var v=el("div","petv");v.appendChild(el("span","pe",PETS[M.pet][0]));
+ if(M.eq.h>=0)v.appendChild(el("span","ph",ACC[M.eq.h][0]));if(M.eq.f>=0)v.appendChild(el("span","pf",ACC[M.eq.f][0]));app.appendChild(v);
+ app.appendChild(el("p","",PETS[M.pet][1]+" · 🪙 "+M.coins));
+ function shop(title,list,pre,use){app.appendChild(el("h2","",title));var r=el("div","row");
+  list.forEach(function(x,i){var pr=x[x.length-1],own=M.inv[pre+i]||pr===0;
+   var b=el("button","chip"+(use(i,1)?" on":""),x[0]+" "+x[1]+(own?"":" · "+pr+" 🪙"));
+   b.onclick=function(){if(!M.inv[pre+i]){if(M.coins<pr){toast("Не хватает монеток 🪙");return}M.coins-=pr;M.inv[pre+i]=1}use(i);save();hdr();petScr()};r.appendChild(b)});app.appendChild(r)}
+ shop("Питомцы",PETS,"p",function(i,q){if(q)return M.pet===i;M.pet=i});
+ shop("Наряды",ACC,"a",function(i,q){var s=ACC[i][2];if(q)return M.eq[s]===i;M.eq[s]=M.eq[s]===i?-1:i})}
+function loadPy(){if(PYO)return Promise.resolve(PYO);return new Promise(function(res,rej){var s=document.createElement("script");s.src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js";s.onload=function(){loadPyodide().then(function(p){PYO=p;res(p)},function(){rej("load")})};s.onerror=function(){rej("load")};document.head.appendChild(s)})}
+function pyBox(){app.innerHTML="";app.appendChild(back());app.appendChild(el("h1","","💻 Python-песочница"));
+ app.appendChild(el("p","mut","Пиши код и запускай прямо в браузере (Ctrl+Enter). Движок Python грузится при первом запуске, нужен интернет. input() откроет окошко для ввода."));
+ var ta=el("textarea","tx");ta.value=lsg("py-code")||"name = input('Как тебя зовут? ')\nprint('Привет,', name)";ta.spellcheck=false;ta.style.minHeight="240px";
+ var out=el("pre","","Вывод появится здесь"),st=el("div","ex");
+ function run(){lss("py-code",ta.value);out.textContent="";st.textContent="Загрузка Python…";
+  loadPy().then(function(py){st.textContent="";py.setStdout({batched:function(x){out.textContent+=x+"\n"}});py.setStderr({batched:function(x){out.textContent+=x+"\n"}});py.setStdin({stdin:function(){var r=prompt("input()");return r===null?"":r}});return py.runPythonAsync(ta.value)}).then(function(){if(!M.ranpy){M.ranpy=1;xp(10)}}).catch(function(e){if(e==="load")st.textContent="Движок Python не загрузился. Нужен интернет, а песочница работает только в версии на GitHub, не в предпросмотре Claude.";else out.textContent+=(e&&e.message)||e})}
+ ta.onkeydown=function(e){if(e.key==="Tab"){e.preventDefault();var a=ta.selectionStart;ta.value=ta.value.slice(0,a)+"    "+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=a+4}else if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();run()}};
+ var rb=el("button","b","▶ Запустить");rb.onclick=run;app.appendChild(ta);var rw=el("div","row");rw.appendChild(rb);app.appendChild(rw);app.appendChild(st);app.appendChild(out)}
+var app=document.getElementById("app");
+function home(){
+ app.innerHTML="";
+ var tot=0;for(var i=0;i<L.length;i++)tot+=pct(i);tot=Math.round(tot/L.length);
+ app.appendChild(el("h1","","Привет, "+(P.name||ME)+"!"));
+ app.appendChild(el("p","mut","Тут 10 уроков по твоим лабораторным. Не надо учить всё сразу: один урок за раз. В каждом четыре шага: прочитать, вспомнить по карточкам, пройти мини-тест и объяснить своими словами. Объяснять вслух своими словами — самый быстрый способ запомнить."));
+ var b=el("div","bar");var f=el("i");f.style.width=tot+"%";b.appendChild(f);app.appendChild(b);
+ app.appendChild(el("p","mut","Всего пройдено: "+tot+"%. Твоя змейка растёт с каждым уроком:"));
+ var sn=el("div","snake");sn.appendChild(el("span","","🐍"));L.forEach(function(l,i){var s=el("i","seg"),f=el("b");f.style.height=pct(i)+"%";s.appendChild(f);sn.appendChild(s)});app.appendChild(sn);
+ var ac=el("div","acts"),mb=el("button","b big2","🚇 Метро-режим: карточки и тест"),cb=el("button","b g big2","📒 Шпаргалка");mb.onclick=function(){location.hash="metro"};cb.onclick=function(){location.hash="cheat"};var nx=-1;L.forEach(function(l,i){if(nx<0&&pct(i)<100)nx=i});if(nx>=0){var cn=el("button","b big2","▶ Продолжить: урок "+(nx+1)+". "+L[nx].t);cn.onclick=function(){location.hash="l"+(nx+1)};ac.appendChild(cn)}
+ ac.appendChild(mb);var pb=el("button","b g big2","⌨️ Практика: задачи и код");pb.onclick=function(){location.hash="lab"};ac.appendChild(pb);ac.appendChild(cb);
+ var gb=el("button","b g big2","❓ Защита лаб и 📜 программы");gb.onclick=function(){location.hash="qa"};ac.appendChild(gb);var xb=el("button","b g big2","💻 Python-песочница: пиши код");xb.onclick=function(){location.hash="code"};ac.appendChild(xb);var sb=el("button","b g","💾 Перенос прогресса");sb.onclick=function(){location.hash="sync"};ac.appendChild(sb);app.appendChild(ac);
+ var gr=el("div","grid");
+ L.forEach(function(l,i){var c=el("button","lc");c.appendChild(el("b","",(i+1)+". "+l.t));c.appendChild(el("span","mut",l.s+" · "+pct(i)+"%"));
+  var bb=el("div","bar"),ff=el("i");ff.style.width=pct(i)+"%";bb.appendChild(ff);c.appendChild(bb);
+  c.onclick=function(){location.hash="l"+(i+1)};gr.appendChild(c)});
+ app.appendChild(gr);var cx=el("div","box");cx.appendChild(el("b","","⚙️ C++: скоро"));cx.appendChild(el("p","mut","Раздел добавим позже. Новые уроки кладутся в массив L в начале скрипта, переделывать сайт не придётся."));app.appendChild(cx)}
+function lesson(i){
+ var l=L[i],p=g(i);app.innerHTML="";
+ var tp=el("div","top"),back=el("button","b g","← Все уроки");back.onclick=function(){location.hash=""};tp.appendChild(back);app.appendChild(tp);
+ app.appendChild(el("h1","",(i+1)+". "+l.t));
+ var stp=el("div","steps");app.appendChild(stp);
+ function upd(){stp.innerHTML="";[["Прочитала",p.r],["Карточки "+Object.keys(p.c).length+"/3",Object.keys(p.c).length>=3],["Тест "+Object.keys(p.q).length+"/2",Object.keys(p.q).length>=2],["Объяснила",p.e]].forEach(function(s){stp.appendChild(el("span","st"+(s[1]?" d":""),(s[1]?"✓ ":"")+s[0]))});if(pct(i)===100&&!p.done){p.done=1;xp(50);toast("🎉 Урок пройден! +50 XP");boom()}save()}
+ app.appendChild(el("h2","","1. Идея простыми словами"));
+ app.appendChild(el("div","box",l.idea));
+ app.appendChild(el("h2","","Пример кода"));
+ app.appendChild(el("pre","",l.code));
+ var rem=el("div","box rem");rem.appendChild(el("b","","Запомни главное"));var ul=el("ul");l.mem.forEach(function(m){ul.appendChild(el("li","",m))});rem.appendChild(ul);app.appendChild(rem);
+ var rb=el("button","b",p.r?"✓ Прочитано":"Я прочитала");rb.onclick=function(){if(!p.r)xp(10);p.r=1;rb.textContent="✓ Прочитано";upd()};app.appendChild(rb);
+ app.appendChild(el("h2","","2. Вспомни сама")); app.appendChild(el("p","mut","Сначала ответь про себя или вслух, потом нажми на карточку. Если знала, нажми «Знаю»."));
+ l.cards.forEach(function(c,j){var d=el("div","box card"+(p.c[j]?" known":""));d.setAttribute("tabindex","0");d.appendChild(el("b","",c[0]));var a=el("div","a",c[1]);d.appendChild(a);
+  var kb=el("button","b g","Знаю");kb.style.marginTop="8px";kb.style.display="none";kb.onclick=function(e){e.stopPropagation();if(!p.c[j])xp(5);p.c[j]=1;d.classList.add("known");upd()};d.appendChild(kb);
+  function tg(){d.classList.toggle("open");kb.style.display=d.classList.contains("open")?"inline-block":"none";if(d.classList.contains("open")&&!p.c[j]){xp(5);p.c[j]=1;d.classList.add("known");upd()}}
+  d.onclick=tg;d.onkeydown=function(e){if(e.key==="Enter"&&e.target===d)tg()};app.appendChild(d)});
+ app.appendChild(el("h2","","3. Мини-тест"));
+ l.quiz.forEach(function(q,j){var d=el("div","box");d.appendChild(el("b","",q[0]));var ex=el("div","ex");
+  q[1].forEach(function(o,k){var bt=el("button","opt",o);bt.onclick=function(){
+   Array.prototype.forEach.call(d.querySelectorAll(".opt"),function(x){x.classList.remove("no")});
+   if(k===q[2]){bt.classList.add("ok");ex.textContent="Верно! "+q[3];if(!p.q[j])xp(10);p.q[j]=1;upd()}else{bt.classList.add("no");ex.textContent="Пока нет. Подумай ещё и попробуй другой вариант."}};d.appendChild(bt)});
+  d.appendChild(ex);app.appendChild(d)});
+ app.appendChild(el("h2","","4. Объясни своими словами"));
+ var d4=el("div","box");d4.appendChild(el("p","",l.say));
+ var ta=el("textarea");ta.placeholder="Напиши объяснение своими словами, как будто рассказываешь подруге...";ta.value=p.txt||"";ta.oninput=function(){p.txt=ta.value;save()};d4.appendChild(ta);
+ var eb=el("button","b",p.e?"✓ Объяснила":"Я объяснила");eb.style.marginTop="8px";eb.onclick=function(){if(ta.value.trim().length<20){eb.textContent="Напиши хотя бы пару предложений";return}if(!p.e)xp(30);p.e=1;eb.textContent="✓ Объяснила";upd()};d4.appendChild(eb);
+ var rf=el("button","b g","👀 Образец объяснения"),rt=el("div","box rem");rt.style.display="none";rt.appendChild(el("b","","Образец. Сверь со своим объяснением:"));rt.appendChild(el("p","",REF[i]));
+ rf.style.marginLeft="8px";rf.onclick=function(){rt.style.display=rt.style.display==="none"?"block":"none"};d4.appendChild(rf);d4.appendChild(rt);app.appendChild(d4);
+ var nx=el("div","top");nx.style.marginTop="24px";
+ if(i>0){var pb=el("button","b g","← Назад");pb.onclick=function(){location.hash="l"+i};nx.appendChild(pb)}else nx.appendChild(el("span"));
+ if(i<L.length-1){var nb=el("button","b","Дальше →");nb.onclick=function(){location.hash="l"+(i+2)};nx.appendChild(nb)}
+ app.appendChild(nx);upd();window.scrollTo(0,0)}
+function route(){hdr();if(!ME)return loginScr();nav();if(location.hash==="#metro")return metro("c");if(location.hash==="#cheat")return cheat();if(location.hash==="#lab")return lab("p");if(location.hash==="#sync")return sync();if(location.hash==="#top")return topScr();if(location.hash==="#pet")return petScr();if(location.hash==="#code")return pyBox();if(location.hash==="#me")return meScr();if(location.hash==="#qa")return qa("q");var m=/^#l(\d+)$/.exec(location.hash);var n=m?+m[1]-1:-1;if(n>=0&&n<L.length)lesson(n);else home()}
+window.addEventListener("hashchange",route);ME=lsg(K)||"";if(ME)loadU(ME);addEventListener("online",push);route();try{if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(function(){})}catch(e){}
+</script></body></html>
